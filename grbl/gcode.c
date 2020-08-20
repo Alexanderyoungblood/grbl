@@ -970,7 +970,11 @@ uint8_t gc_execute_line(char *line)
           #ifdef USE_LINE_NUMBERS
             mc_line(gc_block.values.xyz, gc_state.feed_rate, gc_state.modal.feed_rate, gc_state.line_number);
           #else
-            mc_line(gc_block.values.xyz, gc_state.feed_rate, gc_state.modal.feed_rate);
+            #ifndef SEGMENTED_LINES
+              mc_line(gc_block.values.xyz, gc_state.feed_rate, gc_state.modal.feed_rate);
+            #else
+              mc_segmented_line(gc_state.position,gc_block.values.xyz, gc_state.feed_rate, gc_state.modal.feed_rate);
+            #endif
           #endif
           break;
         case MOTION_MODE_CW_ARC: 

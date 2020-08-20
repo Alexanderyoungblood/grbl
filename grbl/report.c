@@ -221,7 +221,8 @@ void report_grbl_settings() {
     printPgmString(PSTR(" (homing feed, mm/min)\r\n$25=")); printFloat_SettingValue(settings.homing_seek_rate);
     printPgmString(PSTR(" (homing seek, mm/min)\r\n$26=")); print_uint8_base10(settings.homing_debounce_delay);
     printPgmString(PSTR(" (homing debounce, msec)\r\n$27=")); printFloat_SettingValue(settings.homing_pulloff);
-    printPgmString(PSTR(" (homing pull-off, mm)\r\n"));
+    printPgmString(PSTR(" (homing pull-off, mm)\r\n$28=")); printFloat_SettingValue(settings.distance);
+    printPgmString(PSTR(" (distance, mm)\r\n"));
   #endif
   
   // Print axis settings
@@ -448,22 +449,38 @@ void report_realtime_status()
   
   // Report machine position
   if (bit_istrue(settings.status_report_mask,BITFLAG_RT_STATUS_MACHINE_POSITION)) {
-    printPgmString(PSTR(",MPos:")); 
+#ifndef HANGING_CNC
+    printPgmString(PSTR(",MPos:"));
+#else  //System position in cartesian coord's
+	  printPgmString(PSTR(",SPos:"));
+#endif
     for (idx=0; idx< N_AXIS; idx++) {
-      printFloat_CoordValue(print_position[idx]);
+#ifndef HANGING_CNC
+    	printFloat_CoordValue(print_position[idx]);
+#else
+    	printFloat_CoordValue(sys.position[idx]/settings.steps_per_mm[idx]);
+#endif
       if (idx < (N_AXIS-1)) { printPgmString(PSTR(",")); }
     }
   }
   
   // Report work position
   if (bit_istrue(settings.status_report_mask,BITFLAG_RT_STATUS_WORK_POSITION)) {
-    printPgmString(PSTR(",WPos:")); 
+#ifndef HANGING_CNC
+	  printPgmString(PSTR(",WPos:"));
+#else //Gcode position in hanging coord's
+	  printPgmString(PSTR(",GPos:"));
+#endif
     for (idx=0; idx< N_AXIS; idx++) {
+#ifndef HANGING_CNC
       // Apply work coordinate offsets and tool length offset to current position.
       print_position[idx] -= gc_state.coord_system[idx]+gc_state.coord_offset[idx];
-      if (idx == TOOL_LENGTH_OFFSET_AXIS) { print_position[idx] -= gc_state.tool_length_offset; }    
+      if (idx == TOOL_LENGTH_OFFSET_AXIS) { print_position[idx] -= gc_state.tool_length_offset; }
       printFloat_CoordValue(print_position[idx]);
       if (idx < (N_AXIS-1)) { printPgmString(PSTR(",")); }
+#else
+      printFloat_CoordValue(gc_state.position[idx]);
+#endif
     }
   }
         

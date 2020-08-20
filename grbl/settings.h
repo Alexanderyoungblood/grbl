@@ -92,6 +92,10 @@ typedef struct {
   float junction_deviation;
   float arc_tolerance;
   
+#ifdef HANGING_CNC
+  float distance; //Distance between motors
+#endif
+
   uint8_t flags;  // Contains default boolean settings
 
   uint8_t homing_dir_mask;

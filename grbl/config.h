@@ -29,9 +29,16 @@
 #define config_h
 #include "grbl.h" // For Arduino IDE compatibility.
 
+// If HANGING_CNC is enabled the coordinates of the machine movement are changed to ones
+//  similar those used to operate a hangning plotter.
+// To active this feature is required to know the distance (d) between the two motors
+#define HANGING_CNC
+
+//Segment straight lines to ensure linear movement when the coordinates system is changed
+#define SEGMENTED_LINES
 
 // Default settings. Used when resetting EEPROM. Change to desired name in defaults.h
-#define DEFAULTS_GENERIC
+#define DEFAULTS_HANGING_CNC
 
 // Serial baud rate
 #define BAUD_RATE 115200
