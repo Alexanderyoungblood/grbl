@@ -110,3 +110,75 @@ List of Supported G-Codes in Grbl v0.9 Master:
 Grbl is an open-source project and fueled by the free-time of our intrepid administrators and altruistic users. If you'd like to donate, all proceeds will be used to help fund supporting hardware and testing equipment. Thank you!
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CUGXJHXA36BYW)
+
+# V-CNC Router
+
+## Definitions
+
+  **Envelope:** 
+  This is the area in which the router can operate, without 
+  catastrophic failure. If we have a cutting surface of 8' by 4', 
+  and we have a sled with vertical borders of 6" and horizontal 
+  borders of 4" around the router bit, then we have an envelope of 
+  (8' - (6"*2)) by (4' - (4"*2)) or 7' by 3'4". Typically you would 
+  use limit switches to define your envelope, but... I'm broke, 
+  so we’re using soft limits. This is not to be confused with the 
+  working area.
+      
+  **Straight Line Subdivision:** 
+  Because we are translating the coordinates in GRBL after they have 
+  been parsed from the GCode and before they have been converted 
+  into a series of step and dir pulses to be interpreted by the 
+  motor drivers, GCode specifying long straight traversals will, 
+  in most cases, result in deformation of the intended line. 
+  Specifically, this is due to the fact that the step and dir pulses 
+  to traverse between two points are still being generated under the 
+  assumption that we are in cartesian space. Suppose we want to get 
+  between two points. We send GCode to GRBL. GRBL parses it and 
+  stores the x & y coordinates in memory. Before GRBL sends that 
+  GCode off to be converted into step and dir pulses, we translate 
+  x & y into the suspender lengths for motors A & B. But in order to 
+  traverse between one set of suspender lengths to the next, the 
+  generated step and dir pulses will only guarantee a linear traversal 
+  in cartesian space, not polar. So, to compensate we subdivide all 
+  straight lines such that any deformation occurs at a negligible 
+  resolution. We will likely subdivide these straight lines when 
+  creating the model, so the GCode renderer doesn't have to do this 
+  subdivision, and can remain lean.
+    
+## MVP-1 Features
+
+**Cartesian-to-Polar Translation:**
+  - motor A will be on the left, motor B will be on the right
+  - suspender A will shorten with CCW rotation of motor A; 
+    suspender B will shorten with CW rotation of motor B.
+  - horizontal distance between motors will be set in 
+    defaults_v_mill.h
+  - horizontal distance between motors can be reset during operation 
+    through the $28 variable
+  - vertical distance between motors will be set in defaults_v_mill.h
+  - vertical distance (from motors to bottom of envelope, will be 
+    set through the $29 variable
+
+**Envelope:**
+  - machine zero, or starting position will be at the bottom center 
+    of the envelope
+  - envelope zero (AKA work zero, or home position) will be set by 
+    jogging from machine zero to the desired work zero, and setting 
+    global offset to x0y0z0 with G92 command
+  - envelope dimensions offsets will be set with soft limits, through 
+    defaults_v_mill.h  
+  - soft limits are enabled through defaults_v_mill.h
+  
+**Coord Reporting:**
+  - report x and y coords of MPOS and WPOS
+  - report length of suspenders A and B as ASLE and BSLE
+  
+**Straight Line Subdivision:**
+  - will be done through the modeling software
+
+**Steps/mm:**
+  - user has to calculate this manually
+  
+**Homing Routine:**
+  - none
