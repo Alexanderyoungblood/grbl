@@ -48,6 +48,7 @@ OBJECTS = $(addprefix $(BUILDDIR)/,$(notdir $(SOURCE:.c=.o)))
 
 FBQN = arduino:avr:uno
 UNOCOM = COM4
+BAUD = 115200
 
 # symbolic targets:
 all:	grbl.hex
@@ -107,3 +108,4 @@ uno:
 	cp -r grbl/ "C:\Users\tutoo\Documents\Arduino\libraries"
 	arduino-cli compile -v --fqbn $(FBQN) grbl/examples/grblUpload/grblUpload.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) grbl/examples/grblUpload/grblUpload.ino
+	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
