@@ -104,8 +104,8 @@ cpp:
 -include $(BUILDDIR)/$(OBJECTS:.o=.d)
 
 uno:
-	make clean
+	# make clean
 	cp -r grbl/ "C:\Users\tutoo\Documents\Arduino\libraries"
-	arduino-cli compile -v --fqbn $(FBQN) grbl/examples/grblUpload/grblUpload.ino
-	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) grbl/examples/grblUpload/grblUpload.ino
+	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/grbl/examples/grblUpload/grblUpload.ino
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/grbl/examples/grblUpload/grblUpload.ino
 	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)

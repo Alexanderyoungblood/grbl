@@ -71,27 +71,27 @@
     plan_buffer_line(target, feed_rate, invert_feed_rate, line_number);
   #else
     #ifdef HANGING_CNC
-      printPgmString(PSTR("X: "));
-      printFloat_CoordValue(target[X_AXIS]);
-      printPgmString(PSTR("\r\n"));
-      printPgmString(PSTR("Y: "));
-      printFloat_CoordValue(target[Y_AXIS]);
-      printPgmString(PSTR("\r\n"));
+      // printPgmString(PSTR("X: "));
+      // printFloat_CoordValue(target[X_AXIS]);
+      // printPgmString(PSTR("\r\n"));
+      // printPgmString(PSTR("Y: "));
+      // printFloat_CoordValue(target[Y_AXIS]);
+      // printPgmString(PSTR("\r\n"));
 
       //Change from cartessian to hanging coordinates
       float target_hanging[N_AXIS];
-      float x= settings.distance-target[X_AXIS];
-      float calc_A_X = target[X_AXIS]-settings.distance;
-      target_hanging[X_AXIS]=sqrt(labs(target[X_AXIS]*target[X_AXIS]+target[Y_AXIS]*target[Y_AXIS]));
-      target_hanging[Y_AXIS]=sqrt(labs(calc_A_X*calc_A_X+target[Y_AXIS]*target[Y_AXIS]));
+      float x= settings.distance+target[X_AXIS];
+      float calc_A_X = target[X_AXIS]+settings.distance;
+      target_hanging[X_AXIS]=sqrt(labs(calc_A_X*calc_A_X+target[Y_AXIS]*target[Y_AXIS]));
+      target_hanging[Y_AXIS]=sqrt(labs(-target[X_AXIS]*-target[X_AXIS]+target[Y_AXIS]*target[Y_AXIS]));
       target_hanging[Z_AXIS]=0.0;
 
-      printPgmString(PSTR("L: "));
-      printFloat_CoordValue(target_hanging[X_AXIS]);
-      printPgmString(PSTR("\r\n"));
-      printPgmString(PSTR("R: "));
-      printFloat_CoordValue(target_hanging[Y_AXIS]);
-      printPgmString(PSTR("\r\n"));
+      // printPgmString(PSTR("L: "));
+      // printFloat_CoordValue(target_hanging[X_AXIS]);
+      // printPgmString(PSTR("\r\n"));
+      // printPgmString(PSTR("R: "));
+      // printFloat_CoordValue(target_hanging[Y_AXIS]);
+      // printPgmString(PSTR("\r\n"));
 
       plan_buffer_line(target_hanging, feed_rate, invert_feed_rate);
 
