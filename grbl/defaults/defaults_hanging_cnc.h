@@ -55,7 +55,7 @@
   #define DEFAULT_HOMING_DEBOUNCE_DELAY 250 // msec (0-65k)
   #define DEFAULT_HOMING_PULLOFF 1.0 // mm
   #define DEFAULT_DISTANCE 850.0 // mm
-  // #define DEFAULT_X_OFFSET -425.0 // mm
+  #define DEFAULT_X_OFFSET 850.0 // mm
   // #define DEFAULT_Y_OFFSET 330.0 // mm
   // #define DEFAULT_Z_OFFSET 200.0 // mm
 

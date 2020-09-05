@@ -197,7 +197,6 @@ static void planner_recalculate()
   } 
 }
 
-
 void plan_reset() 
 {
   memset(&pl, 0, sizeof(planner_t)); // Clear planner struct
@@ -258,6 +257,12 @@ uint8_t plan_check_full_buffer()
   void plan_buffer_line(float *target, float feed_rate, uint8_t invert_feed_rate) 
 #endif
 {
+  printPgmString(PSTR("X: "));
+  printFloat_CoordValue(pl.position[X_AXIS]);
+  printPgmString(PSTR("\r\n"));
+  printPgmString(PSTR("Y: "));
+  printFloat_CoordValue(pl.position[Y_AXIS]);
+  printPgmString(PSTR("\r\n"));
   // Prepare and initialize new block
   plan_block_t *block = &block_buffer[block_buffer_head];
   block->step_event_count = 0;
@@ -421,6 +426,7 @@ void plan_sync_position()
 {
   // TODO: For motor configurations not in the same coordinate frame as the machine position,
   // this function needs to be updated to accomodate the difference. 
+  #ifndef HANGING_CNC
   uint8_t idx;
   for (idx=0; idx<N_AXIS; idx++) {
     #ifdef COREXY
@@ -435,6 +441,14 @@ void plan_sync_position()
       pl.position[idx] = sys.position[idx];
     #endif
   }
+  #else
+  int32_t init_steps[N_AXIS];
+  init_steps[0] = lround(DEFAULT_DISTANCE*settings.steps_per_mm[0]);
+  for (int idx=1; idx<N_AXIS; idx++) {
+    init_steps[idx] = lround(0.0);
+  }
+  memcpy(pl.position, init_steps, sizeof(init_steps));
+  #endif
 }
 
 
