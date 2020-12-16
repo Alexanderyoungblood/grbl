@@ -103,12 +103,26 @@ cpp:
 # include generated header dependencies
 -include $(BUILDDIR)/$(OBJECTS:.o=.d)
 
-uno:
+grbl_uno:
 	# make clean
 	cp -r grbl/ "C:\Users\tutoo\Documents\Arduino\libraries"
 	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/grbl/examples/grblUpload/grblUpload.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/grbl/examples/grblUpload/grblUpload.ino
 	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
 
-cereal:
+bs_uno:
+	# make clean
+	# CURLOC = $(pwd)
+	cp -r blink/ "C:\Users\tutoo\Documents\Arduino\libraries"
+	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
+
+bf_uno:
+	# make clean
+	cp -r grbl/ "C:\Users\tutoo\Documents\Arduino\libraries"
+	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
+	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
+
+serial:
 	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
