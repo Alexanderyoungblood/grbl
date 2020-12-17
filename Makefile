@@ -107,7 +107,7 @@ grblUp:
 	cp -r grbl/ /root/Arduino/libraries
 	arduino-cli compile -v --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
-	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
+	minicom -b $(BAUD) -o -D $(UNOCOM)
 
 bs:
 	cp -r blink/ /root/Arduino/libraries
@@ -120,4 +120,4 @@ bf:
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./blink/examples/blinkFast/blinkFast.ino
 
 serial:
-	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
+	minicom -b $(BAUD) -o -D $(UNOCOM)
