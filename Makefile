@@ -103,26 +103,24 @@ cpp:
 # include generated header dependencies
 -include $(BUILDDIR)/$(OBJECTS:.o=.d)
 
-grbl_uno:
+grbl:
 	# make clean
 	cp -r grbl/ "C:\Users\tutoo\Documents\Arduino\libraries"
 	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/grbl/examples/grblUpload/grblUpload.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/grbl/examples/grblUpload/grblUpload.ino
 	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
 
-bs_uno:
+bs:
 	# make clean
-	# CURLOC = $(pwd)
 	cp -r blink/ "C:\Users\tutoo\Documents\Arduino\libraries"
-	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
-	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
+	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/examples/blinkSlow/blinkSlow.ino
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/examples/blinkSlow/blinkSlow.ino
 
-bf_uno:
+bf:
 	# make clean
-	cp -r grbl/ "C:\Users\tutoo\Documents\Arduino\libraries"
-	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
-	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/blink-slow.c
-	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
+	cp -r blink/ "C:\Users\tutoo\Documents\Arduino\libraries"
+	arduino-cli compile -v --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/examples/blinkFast/blinkFast.ino
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) /Users/tutoo/git/grbl/blink/examples/blinkFast/blinkFast.ino
 
 serial:
 	putty.exe -serial $(UNOCOM) -sercfg $(BAUD)
