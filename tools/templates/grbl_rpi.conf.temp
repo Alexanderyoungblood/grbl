@@ -1,0 +1,7 @@
+NETWORK_SSID="" #WPA2 WiFi network SSID (required)
+NETWORK_PASSWORD="" #WPA2 WiFi network password (required)
+GRBL_PUBKEY='' #public (required)
+NEW_HOSTNAME="" #hostname of server (defaults to remain unchanged)
+GIT_DIRECTORY="" #directory for git repositories relative to $HOME directory (defaults to $HOME directory)
+GRBL_REPO="" #desired repository for grbl (defaults to "https://github.com/gnea/grbl")
+GIT_BRANCH="transmodpolarcopypiz" #desired branch for grbl repository (defaults to "master")
