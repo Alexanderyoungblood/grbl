@@ -17,6 +17,7 @@ source $(dirname $(realpath $0))/grbl_rpi.conf
 [ -z "$GRBL_PUBKEY" ] && fail "GRBL_PUBKEY required"
 [ -z "$NEW_HOSTNAME" ] && NEW_HOSTNAME=$(hostname)
 OLD_HOSTNAME=$(hostname)
+SCRIPT_DIR=$(dirname $(realpath $0))
 
 #setup wifi connection
 echo "
@@ -39,7 +40,7 @@ sudo sed -i "s/127.0.1.1.*$OLD_HOSTNAME\$/127.0.1.1\t$NEW_HOSTNAME/g" /etc/hosts
 
 #setup crontab to execute next setup script after reboot
 crontab -l > setupcron
-echo "@reboot sh $(dirname $(realpath $0))/grbl_rpi_setup_update.sh" >> setupcron
+echo "@reboot $SCRIPT_DIR/grbl_rpi_setup_update.sh" >> setupcron
 crontab setupcron
 rm setupcron
 

@@ -4,6 +4,9 @@
 # grbl_rpi_setup_update.shsetting. Modify script settings in 
 # grbl_rpi.conf
 
+#sleep to wait for network connection to come up (avoid busy waiting)
+sleep 60
+
 #helper function to output error message and exit
 function fail {
     printf '%s\n' "$1" >&2
@@ -15,6 +18,8 @@ source $(dirname $(realpath $0))/grbl_rpi.conf
 [ -z "$GIT_DIRECTORY" ] && GIT_DIRECTORY=""
 [ -z "$GIT_BRANCH" ] && GIT_BRANCH="master"
 [ -z "$GRBL_REPO" ] && GRBL_REPO="https://github.com/gnea/grbl"
+[ -z "$ARDUINO_DIR" ] && ARDUINO_DIR=$HOME
+SCRIPT_DIR=$(dirname $(realpath $0))
 
 #install update
 sudo apt-get update
@@ -26,9 +31,9 @@ mkdir $HOME/$GIT_DIRECTORY
 git -C $HOME/$GIT_DIRECTORY clone --branch $GIT_BRANCH $GRBL_REPO
 
 #install arduino cli
-sh $(dirname $(realpath $0))/dependencies/install.sh
-echo 'export PATH=$PATH:$HOME/bin' >> $HOME/.bashrc
-export PATH=$PATH:$HOME/bin
+(cd $ARDUINO_DIR; sh $SCRIPT_DIR/dependencies/install.sh)
+echo 'export PATH=$PATH:'$ARDUINO_DIR'/bin' >> $HOME/.bashrc
+export PATH=$PATH:$ARDUINO_DIR/bin
 arduino-cli core install arduino:avr
 
 #install minicom
