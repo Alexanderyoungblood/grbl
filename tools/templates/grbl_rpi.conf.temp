@@ -1,3 +1,8 @@
+# Config file for grbl setup script on raspberrypi
+# Copy this file from the templates folder to
+#  grbl_rpi.conf in the folder containing grbl_rpi_setup_network.sh and
+#  grbl_rpi_setup_update.sh. Modify script settings in
+#  grbl_rpi.conf
 NETWORK_SSID="" #WPA2 WiFi network SSID (required)
 NETWORK_PASSWORD="" #WPA2 WiFi network password (required)
 GRBL_PUBKEY='' #public (required)

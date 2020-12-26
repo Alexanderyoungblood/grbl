@@ -1,0 +1,6 @@
+# Config file for remote access of grblServer
+# Copy this file from the templates folder to local.conf in the tools
+#  folder. Modify script settings in local.conf
+SERVER_USER="" # User of grblServer being connected to (required)
+SERVER_HOSTNAME="" # Hostname of grblServer being connected to (required)
+PRIVATE_KEY_LOC="" # Location on local machine of private key for ssh access (required)
