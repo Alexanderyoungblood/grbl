@@ -107,7 +107,6 @@ grblUp:
 	cp -r grbl/ /root/Arduino/libraries
 	arduino-cli compile -v --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
-	minicom -b $(BAUD) -o -D $(UNOCOM)
 
 bs:
 	cp -r blink/ /root/Arduino/libraries
