@@ -104,17 +104,17 @@ cpp:
 -include $(BUILDDIR)/$(OBJECTS:.o=.d)
 
 grblUp:
-	cp -r grbl/ $HOME/Arduino/libraries
+	cp -r grbl/ $(HOME)/Arduino/libraries
 	arduino-cli compile -v --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
 
 bs:
-	cp -r blink/ $HOME/Arduino/libraries
+	cp -r blink/ $(HOME)/Arduino/libraries
 	arduino-cli compile -v --fqbn $(FBQN) ./blink/examples/blinkSlow/blinkSlow.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./blink/examples/blinkSlow/blinkSlow.ino
 
 bf:
-	cp -r blink/ $HOME/Arduino/libraries
+	cp -r blink/ $(HOME)/Arduino/libraries
 	arduino-cli compile -v --fqbn $(FBQN) ./blink/examples/blinkFast/blinkFast.ino
 	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./blink/examples/blinkFast/blinkFast.ino
 
