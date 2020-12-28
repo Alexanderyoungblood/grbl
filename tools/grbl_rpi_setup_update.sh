@@ -41,6 +41,9 @@ rm setupcron
 echo 'export PATH=$PATH:'$ARDUINO_DIR'/bin' >> $HOME/.bashrc
 export PATH=$PATH:$ARDUINO_DIR/bin
 arduino-cli core install arduino:avr
+mkdir $HOME/Arduino
+mkdir $HOME/Arduino/libraries
+
 
 # install minicom
 sudo apt-get install -y minicom
