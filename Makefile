@@ -46,6 +46,10 @@ COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) -I. -ffunction-sect
 
 OBJECTS = $(addprefix $(BUILDDIR)/,$(notdir $(SOURCE:.c=.o)))
 
+FBQN = arduino:avr:uno
+UNOCOM = /dev/ttyACM0
+BAUD = 115200
+
 # symbolic targets:
 all:	grbl.hex
 
@@ -99,8 +103,20 @@ cpp:
 # include generated header dependencies
 -include $(BUILDDIR)/$(OBJECTS:.o=.d)
 
-uno:
-	make clean
-	cp -r grbl/ "C:\Users\tutoo\Documents\Arduino\libraries"
-	arduino-cli compile -v --fqbn $(FBQN) grbl/examples/grblUpload/grblUpload.ino
-	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) grbl/examples/grblUpload/grblUpload.ino
+grblUp:
+	cp -r grbl/ $(HOME)/Arduino/libraries
+	arduino-cli compile -v --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./grbl/examples/grblUpload/grblUpload.ino
+
+bs:
+	cp -r blink/ $(HOME)/Arduino/libraries
+	arduino-cli compile -v --fqbn $(FBQN) ./blink/examples/blinkSlow/blinkSlow.ino
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./blink/examples/blinkSlow/blinkSlow.ino
+
+bf:
+	cp -r blink/ $(HOME)/Arduino/libraries
+	arduino-cli compile -v --fqbn $(FBQN) ./blink/examples/blinkFast/blinkFast.ino
+	arduino-cli upload -v -p $(UNOCOM) --fqbn $(FBQN) ./blink/examples/blinkFast/blinkFast.ino
+
+serial:
+	minicom -b $(BAUD) -o -D $(UNOCOM)
