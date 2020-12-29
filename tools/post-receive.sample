@@ -1,0 +1,26 @@
+#!/bin/bash
+
+ENDPOINT_DIRECTORY=endpoint
+DEPLOY_DIRECTORY=deploy
+GRBL_REPO_NAME=grbl
+GRBL_REPO_URL="https://github.com/Alexanderyoungblood/grbl"
+GIT_BRANCH=$(basename $3)
+CURRENT_COMMIT=$(git rev-parse HEAD)
+ORIGIN_CURRENT_COMMIT=$(git ls-remote --heads --tags origin $GIT_BRANCH | awk '{print $1;}')
+
+while [ "$CURRENT_COMMIT" != "$ORIGIN_CURRENT_COMMIT" ]
+do
+  echo "Waiting for received commit ($CURRENT_COMMIT)"
+  echo " to match most recent commit at origin ($ORIGIN_CURRENT_COMMIT)"
+  echo " for branch $GIT_BRANCH."
+  sleep 1
+  ORIGIN_CURRENT_COMMIT=$(git ls-remote --heads --tags origin $GIT_BRANCH | awk '{print $1;}')
+done
+
+echo "Commit $ORIGIN_CURRENT_COMMIT received at origin."
+echo "Deploying..."
+rm -rf $HOME/$DEPLOY_DIRECTORY/$GRBL_REPO_NAME
+git -C $HOME/$DEPLOY_DIRECTORY clone --branch $GIT_BRANCH $GRBL_REPO_URL
+if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+$HOME/$DEPLOY_DIRECTORY/$GRBL_REPO_NAME/tools/deploy.sh
+if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
